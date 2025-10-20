@@ -6,7 +6,7 @@ pub(open) trait ToMorphirJson {
 ///|
 pub fn[A : ToMorphirJson] to_morphir_json(
   value : A,
-  options : MorphirJsonOptions,
+  options? : MorphirJsonOptions = Default::default(),
 ) -> Json {
   value.to_json(options)
 }
