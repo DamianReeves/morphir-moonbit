@@ -1,4 +1,5 @@
 ///|
 fn main {
-  println(@lib.fib(10))
+  let name = @ir.Name::from_string("Morphir.IR.Name")
+  println(name)
 }
