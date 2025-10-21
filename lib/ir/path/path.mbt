@@ -56,3 +56,18 @@ pub fn Path::to_string(
 ) -> String {
   self.0.iter().map(renderer).join(separator)
 }
+
+///|
+/// Checks if a Path is a prefix of another.
+pub fn Path::is_prefix_of(self : Path, other : Path) -> Bool {
+  loop (self.0, other.0) {
+    (Empty, _) => break true
+    (_, Empty) => break false
+    (More(self_head, tail=rest_self), More(other_head, tail=rest_other)) =>
+      if self_head == other_head {
+        continue (rest_self, rest_other)
+      } else {
+        break false
+      }
+  }
+}
