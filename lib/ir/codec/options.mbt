@@ -16,11 +16,12 @@ pub(all) enum UnitJsonEncoding {
   AsEmptyObject
 } derive(Eq, Hash, Show)
 
-
+///|
 pub impl Default for NameJsonEncoding with default() {
   NameJsonEncoding::AsList
 }
 
+///|
 pub impl Default for UnitJsonEncoding with default() {
   UnitJsonEncoding::AsEmptyObject
 }
