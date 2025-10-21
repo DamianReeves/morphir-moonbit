@@ -5,3 +5,7 @@ pub using @codec {
 pub using @name {
   type Name
 }
+
+pub using @path {
+  type Path
+}

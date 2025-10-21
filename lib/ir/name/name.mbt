@@ -1,5 +1,6 @@
 ///|
-pub struct Name(@list.List[String]) derive(Eq, Hash, Show)
+pub struct Name(@list.List[String]) derive(Eq, Hash)
+pub typealias ((Name) -> String) as NameRenderer
 
 pub fn Name::is_empty(self : Name) -> Bool {
   self.0.is_empty()
@@ -8,6 +9,14 @@ pub fn Name::is_empty(self : Name) -> Bool {
 ///|Convert a list of strings into a Name.
 pub fn Name::from_list(parts : @list.List[String]) -> Name {
   Name(parts)
+}
+
+pub fn of(parts : @list.List[String]) -> Name {
+  Name(parts)
+}
+
+pub fn from_string(input: String) -> Name {
+  Name::from_string(input)
 }
 
 ///|
@@ -99,6 +108,10 @@ pub impl @codec.ToMorphirJson for Name with to_json(
     @codec.NameJsonEncoding::AsString => Json::string(self.0.iter().join("-"))
     @codec.NameJsonEncoding::AsList => self.0.to_json()
   }
+}
+
+pub impl Show for Name with output(self, logger){
+  logger.write_string(self.to_kebab_case())
 }
 
 fn capitalize(input:String) -> String {

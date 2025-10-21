@@ -1,0 +1,27 @@
+pub struct Path(@list.List[@name.Name]) derive(Eq, Hash, Show) 
+
+///|Convert a list of Names into a Path.
+pub fn Path::from_list(parts : @list.List[@name.Name]) -> Path {
+  Path(parts)
+}
+
+///Translates a string into a path by splitting it into names along special characters.
+///The algorithm will treat any non-word charaters that are not spaces as a path separator.
+pub fn from_string(input: String) -> Path {
+  let segments = 
+    loop(input.view(), [], StringBuilder::new()) {
+      ([], acc, name_str) if name_str.is_empty() => break acc
+      ([], acc, name_str) => break acc + [@name.from_string(name_str.to_string())]
+      (rest, acc, name_str) =>
+        lexmatch rest with longest {
+          ("[^\\w\\s]+", remaining) => continue(remaining, acc  + [@name.from_string(name_str.to_string())], StringBuilder::new())
+          ("." as next, remaining) => continue(remaining, acc, { name_str.write_char(next); name_str })
+          _ => break acc
+        }
+    }
+  Path(@list.from_array(segments))
+}
+
+pub fn Path::to_string(self:Path, renderer: @name.NameRenderer, separator:String) -> String {
+  self.0.iter().map(renderer).join(separator)
+}
