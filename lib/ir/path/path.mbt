@@ -7,6 +7,10 @@ pub fn Path::from_list(parts : @list.List[@name.Name]) -> Path {
   Path(parts)
 }
 
+pub fn of(parts:Array[@name.Name]) -> Path {
+  Path(@list.from_array(parts))
+}
+
 ///|
 ///Translates a string into a path by splitting it into names along special characters.
 ///The algorithm will treat any non-word charaters that are not spaces as a path separator.
@@ -40,10 +44,12 @@ pub fn from_string(input : String) -> Path {
   Path(@list.from_array(segments))
 }
 
+///|
 pub fn to_list(self : Path) -> @list.List[@name.Name] {
   self.0
 }
 
+///|
 pub fn Path::to_listqq(self : Path) -> @list.List[@name.Name] {
   self.0
 }
@@ -59,8 +65,10 @@ pub fn Path::to_string(
 
 ///|
 /// Checks if a Path is a prefix of another.
-pub fn Path::is_prefix_of(self : Path, other : Path) -> Bool {
-  loop (self.0, other.0) {
+/// A Path `p1` is a prefix of Path `p2` if all the names in `p1`
+/// appear in the same order at the start of `p2`.
+pub fn Path::is_prefix_of(self : Path, path : Path) -> Bool {
+  loop (self.0, path.0) {
     (Empty, _) => break true
     (_, Empty) => break false
     (More(self_head, tail=rest_self), More(other_head, tail=rest_other)) =>

@@ -24,8 +24,8 @@ test "from_string | fooBar.Baz" {
   let input = "fooBar.Baz"
   let path = @path.from_string(input)
   let expected_names = @list.of([
-    @name.of(@list.of(["foo", "bar"])),
-    @name.of(@list.of(["baz"])),
+    @name.of(["foo", "bar"]),
+    @name.of(["baz"]),
   ])
   assert_eq(path.0, expected_names)
 }
@@ -35,8 +35,8 @@ test "from_string | foo bar/baz" {
   let input = "foo bar/baz"
   let path = @path.from_string(input)
   let expected_names = @list.of([
-    @name.of(@list.of(["foo", "bar"])),
-    @name.of(@list.of(["baz"])),
+    @name.of(["foo", "bar"]),
+    @name.of(["baz"]),
   ])
   assert_eq(path.0, expected_names)
 }
@@ -51,20 +51,29 @@ test "to_list" {
   assert_eq(name_list, @list.of([name1, name2, name3]))
 }
 
-test "Path::is_prefix_of | isPrefixOf [ [ \"foo\" ], [ \"bar\" ] ] [ [ \"foo\" ] ]" {
-  let path1 = @path.Path::from_list(@list.of([@name.of(@list.of(["foo"])), @name.of(@list.of(["bar"]))]))
-  let path2 = @path.Path::from_list(@list.of([@name.of(@list.of(["foo"]))]))
-  assert_true(path2.is_prefix_of(path1))
+///|
+test "Path::is_prefix_of | 1 ]" {
+  let path = @path.Path::from_list(
+    @list.of([@name.of(["foo"]), @name.of(["bar"])]),
+  )
+  let prefix = @path.Path::from_list(@list.of([@name.of(["foo"])]))
+  assert_true(prefix.is_prefix_of(path))
 }
 
-test "Path::is_prefix_of | isPrefixOf [ [ \"foo\" ] ] [ [ \"foo\" ], [ \"bar\" ] ]" {
-  let path1 = @path.Path::from_list(@list.of([@name.of(@list.of(["foo"]))]))
-  let path2 = @path.Path::from_list(@list.of([@name.of(@list.of(["foo"])), @name.of(@list.of(["bar"]))]))
-  assert_false(path1.is_prefix_of(path2))
+///|
+test "Path::is_prefix_of | 2 ]" {
+  let path : @path.Path = @path.of([@name.of(["foo"])])
+  let prefix : @path.Path = @path.of([@name.of(["foo"]), @name.of(["bar"])])
+  assert_false(prefix.is_prefix_of(path))
 }
 
-test "Path::is_prefix_of | isPrefixOf [ [ \"foo\" ], [ \"bar\" ] ] [ [ \"foo\" ], [ \"bar\" ] ]" {
-  let path1 = @path.Path::from_list(@list.of([@name.of(@list.of(["foo"])), @name.of(@list.of(["bar"]))]))
-  let path2 = @path.Path::from_list(@list.of([@name.of(@list.of(["foo"])), @name.of(@list.of(["bar"]))]))
-  assert_true(path1.is_prefix_of(path2))
+///|
+test "Path::is_prefix_of | 3" {
+  let prefix = @path.of(
+    [@name.of(["foo"]), @name.of(["bar"])],
+  )
+  let path = @path.Path::from_list(
+    @list.of([@name.of(["foo"]), @name.of(["bar"])]),
+  )
+  assert_true(prefix.is_prefix_of(path))
 }

@@ -16,8 +16,8 @@ pub fn Name::from_list(parts : @list.List[String]) -> Name {
 }
 
 ///|
-pub fn of(parts : @list.List[String]) -> Name {
-  Name(parts)
+pub fn of(parts : Array[String]) -> Name {
+  Name(@list.from_array(parts))
 }
 
 ///|
