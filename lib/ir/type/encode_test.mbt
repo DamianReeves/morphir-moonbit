@@ -1,12 +1,13 @@
-let string_type_ref: Type[Unit] =
-  Type::reference((),
-    @fqname.fq_name(
-      @package.PackageName::from_string("Morphir.Sdk"),
-      @module.ModulePath::from_string("Basics"),
-      @name.Name::from_string("string"),
-    ),
-    @list.of([]),
-  )
+///|
+let string_type_ref : Type[Unit] = Type::reference(
+  (),
+  @fqname.fq_name(
+    @package.PackageName::from_string("Morphir.Sdk"),
+    @module.ModulePath::from_string("Basics"),
+    @name.Name::from_string("string"),
+  ),
+  @list.of([]),
+)
 
 ///|
 test "Unit type encoding" {
@@ -128,12 +129,22 @@ test "ExtensibleRecord type encoding" {
     [
       {
         "name": ["first", "name"],
-        "tpe": ["Reference", {}, [[["morphir"], ["sdk"]], [["basics"]], ["string"]], []],
+        "tpe": [
+          "Reference",
+          {},
+          [[["morphir"], ["sdk"]], [["basics"]], ["string"]],
+          [],
+        ],
       },
       {
         "name": ["last", "name"],
-        "tpe": ["Reference", {}, [[["morphir"], ["sdk"]], [["basics"]], ["string"]], []],
+        "tpe": [
+          "Reference",
+          {},
+          [[["morphir"], ["sdk"]], [["basics"]], ["string"]],
+          [],
+        ],
       },
     ],
-  ])    
+  ])
 }
