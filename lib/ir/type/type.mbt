@@ -3,6 +3,7 @@ pub enum Type[A] {
   Variable(A, Name)
   Reference(A, @fqname.FQName, @list.List[Type[A]])
   Tuple(A, @list.List[Type[A]])
+  Record(A, @list.List[Field[A]])
   Function(A, Type[A], Type[A])
   Unit(A)
 } derive(Eq, Hash, Show)
@@ -14,6 +15,14 @@ pub fn[A] Type::function(
   return_type : Type[A],
 ) -> Type[A] {
   Type::Function(attributes, parameter_type, return_type)
+}
+
+///|
+pub fn[A] Type::record(
+  attributes : A,
+  fields : @list.List[Field[A]],
+) -> Type[A] {
+  Type::Record(attributes, fields)
 }
 
 ///|

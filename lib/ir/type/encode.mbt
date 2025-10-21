@@ -23,6 +23,12 @@ pub impl[A : @codec.ToMorphirJson] @codec.ToMorphirJson for Type[A] with to_json
         attributes.to_json(options),
         ToMorphirJson::to_json(element_types, options),
       ])
+    Record(attributes, fields) =>
+      Json::array([
+        Json::string("Record"),
+        attributes.to_json(options),
+        ToMorphirJson::to_json(fields, options),
+      ])  
     Function(attributes, parameter_type, return_type) =>
       Json::array([
         Json::string("Function"),
@@ -33,4 +39,14 @@ pub impl[A : @codec.ToMorphirJson] @codec.ToMorphirJson for Type[A] with to_json
     Unit(attributes) =>
       Json::array([Json::string("Unit"), attributes.to_json(options)])
   }
+}
+
+pub impl[A : @codec.ToMorphirJson] @codec.ToMorphirJson for Field[A] with to_json(
+  self : Field[A],
+  options : @codec.MorphirJsonOptions,
+) -> Json {
+  Json::object({
+    "name": self.name.to_json(options),
+    "tpe": self.tpe.to_json(options),
+  })
 }

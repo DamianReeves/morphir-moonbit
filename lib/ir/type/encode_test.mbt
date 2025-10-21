@@ -68,3 +68,25 @@ test "Reference type encoding" {
     [["Unit", {}]],
   ])
 } 
+
+///|
+test "Record type encoding" {
+  let field1 = @type.field(
+    @name.Name::from_string("fieldOne"),
+    Type::variable((), @name.Name::from_string("FieldType1")),
+  )
+  let field2 = @type.field(
+    @name.Name::from_string("fieldTwo"),
+    Type::unit(()),
+  )
+  let record_type = Type::record((), @list.of([field1, field2]))
+  let json : Json = record_type.to_json(Default::default())
+  @json.inspect(json, content=[
+    "Record",
+    {},
+    [
+      {"name": ["field", "one"], "tpe": ["Variable", {}, ["field", "type", "1"]]},
+      {"name": ["field", "two"], "tpe": ["Unit", {}]},
+    ],
+  ])
+}
