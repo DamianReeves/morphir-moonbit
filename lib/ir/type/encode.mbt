@@ -28,7 +28,14 @@ pub impl[A : @codec.ToMorphirJson] @codec.ToMorphirJson for Type[A] with to_json
         Json::string("Record"),
         attributes.to_json(options),
         ToMorphirJson::to_json(fields, options),
-      ])  
+      ])
+    ExtensibleRecord(attributes, name, fields) =>
+      Json::array([
+        Json::string("ExtensibleRecord"),
+        attributes.to_json(options),
+        name.to_json(options),
+        ToMorphirJson::to_json(fields, options),
+      ])
     Function(attributes, parameter_type, return_type) =>
       Json::array([
         Json::string("Function"),
@@ -41,6 +48,7 @@ pub impl[A : @codec.ToMorphirJson] @codec.ToMorphirJson for Type[A] with to_json
   }
 }
 
+///|
 pub impl[A : @codec.ToMorphirJson] @codec.ToMorphirJson for Field[A] with to_json(
   self : Field[A],
   options : @codec.MorphirJsonOptions,

@@ -1,3 +1,4 @@
+///|
 pub impl @codec.ToMorphirJson for FQName with to_json(
   self : FQName,
   options : @codec.MorphirJsonOptions,

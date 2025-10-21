@@ -1,3 +1,4 @@
+///|
 pub impl @codec.ToMorphirJson for PackageName with to_json(
   self : PackageName,
   options : @codec.MorphirJsonOptions,

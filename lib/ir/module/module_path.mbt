@@ -7,6 +7,12 @@ pub fn ModulePath::from_list(parts : @list.List[@name.Name]) -> ModulePath {
 }
 
 ///|
+pub fn ModulePath::from_string(name : String) -> ModulePath {
+  let path = @path.from_string(name)
+  ModulePath(path.to_list())
+}
+
+///|
 pub fn ModulePath::to_list(self : ModulePath) -> @list.List[@name.Name] {
   self.0
 }

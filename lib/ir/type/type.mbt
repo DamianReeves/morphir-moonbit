@@ -4,9 +4,19 @@ pub enum Type[A] {
   Reference(A, @fqname.FQName, @list.List[Type[A]])
   Tuple(A, @list.List[Type[A]])
   Record(A, @list.List[Field[A]])
+  ExtensibleRecord(A, Name, @list.List[Field[A]])
   Function(A, Type[A], Type[A])
   Unit(A)
 } derive(Eq, Hash, Show)
+
+///|
+pub fn[A] Type::extensible_record(
+  attributes : A,
+  name : Name,
+  fields : @list.List[Field[A]],
+) -> Type[A] {
+  Type::ExtensibleRecord(attributes, name, fields)
+}
 
 ///|
 pub fn[A] Type::function(

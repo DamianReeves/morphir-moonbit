@@ -1,3 +1,13 @@
+let string_type_ref: Type[Unit] =
+  Type::reference((),
+    @fqname.fq_name(
+      @package.PackageName::from_string("Morphir.Sdk"),
+      @module.ModulePath::from_string("Basics"),
+      @name.Name::from_string("string"),
+    ),
+    @list.of([]),
+  )
+
 ///|
 test "Unit type encoding" {
   let unit_type = Type::unit(())
@@ -50,8 +60,15 @@ test "Tuple type encoding" {
 ///|
 test "Reference type encoding" {
   let fq_name = @fqname.fq_name(
-    @package.PackageName::from_list(@list.of([@name.Name::from_string("MyPackage")])),
-    @module.ModulePath::from_list(@list.of([@name.Name::from_string("MyModule"), @name.Name::from_string("Path")])),
+    @package.PackageName::from_list(
+      @list.of([@name.Name::from_string("MyPackage")]),
+    ),
+    @module.ModulePath::from_list(
+      @list.of([
+        @name.Name::from_string("MyModule"),
+        @name.Name::from_string("Path"),
+      ]),
+    ),
     @name.Name::from_string("MyType"),
   )
   let type_arg = Type::unit(())
@@ -60,14 +77,10 @@ test "Reference type encoding" {
   @json.inspect(json, content=[
     "Reference",
     {},
-    [
-      [["my","package"]],
-      [["my","module"], ["path"]],
-      ["my", "type"]
-    ],
+    [[["my", "package"]], [["my", "module"], ["path"]], ["my", "type"]],
     [["Unit", {}]],
   ])
-} 
+}
 
 ///|
 test "Record type encoding" {
@@ -75,18 +88,52 @@ test "Record type encoding" {
     @name.Name::from_string("fieldOne"),
     Type::variable((), @name.Name::from_string("FieldType1")),
   )
-  let field2 = @type.field(
-    @name.Name::from_string("fieldTwo"),
-    Type::unit(()),
-  )
+  let field2 = @type.field(@name.Name::from_string("fieldTwo"), Type::unit(()))
   let record_type = Type::record((), @list.of([field1, field2]))
   let json : Json = record_type.to_json(Default::default())
   @json.inspect(json, content=[
     "Record",
     {},
     [
-      {"name": ["field", "one"], "tpe": ["Variable", {}, ["field", "type", "1"]]},
-      {"name": ["field", "two"], "tpe": ["Unit", {}]},
+      {
+        "name": ["field", "one"],
+        "tpe": ["Variable", {}, ["field", "type", "1"]],
+      },
+      { "name": ["field", "two"], "tpe": ["Unit", {}] },
     ],
   ])
+}
+
+///|
+test "ExtensibleRecord type encoding" {
+  let name = @name.Name::from_string("A")
+  let firstNameField = @type.field(
+    @name.Name::from_string("FirstName"),
+    string_type_ref,
+  )
+  let lastNameField = @type.field(
+    @name.Name::from_string("LastName"),
+    string_type_ref,
+  )
+  let extensible_record_type = Type::extensible_record(
+    (),
+    name,
+    @list.of([firstNameField, lastNameField]),
+  )
+  let json : Json = extensible_record_type.to_json(Default::default())
+  @json.inspect(json, content=[
+    "ExtensibleRecord",
+    {},
+    ["a"],
+    [
+      {
+        "name": ["first", "name"],
+        "tpe": ["Reference", {}, [[["morphir"], ["sdk"]], [["basics"]], ["string"]], []],
+      },
+      {
+        "name": ["last", "name"],
+        "tpe": ["Reference", {}, [[["morphir"], ["sdk"]], [["basics"]], ["string"]], []],
+      },
+    ],
+  ])    
 }

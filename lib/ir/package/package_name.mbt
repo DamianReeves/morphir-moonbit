@@ -1,9 +1,16 @@
 ///|
 pub struct PackageName(@list.List[@name.Name]) derive(Eq, Hash, Show)
 
+
 ///|
 pub fn PackageName::from_list(parts : @list.List[@name.Name]) -> PackageName {
   PackageName(parts)
+}
+
+///|
+pub fn PackageName::from_string(name : String) -> PackageName {
+  let path = @path.from_string(name)
+  PackageName(path.to_list())
 }
 
 ///|

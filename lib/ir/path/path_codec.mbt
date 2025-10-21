@@ -1,3 +1,4 @@
+///|
 pub impl @codec.ToMorphirJson for Path with to_json(
   self : Path,
   options : @codec.MorphirJsonOptions,

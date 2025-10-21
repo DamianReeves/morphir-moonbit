@@ -7,7 +7,8 @@ pub fn Path::from_list(parts : @list.List[@name.Name]) -> Path {
   Path(parts)
 }
 
-pub fn of(parts:Array[@name.Name]) -> Path {
+///|
+pub fn of(parts : Array[@name.Name]) -> Path {
   Path(@list.from_array(parts))
 }
 
