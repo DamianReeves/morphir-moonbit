@@ -46,3 +46,25 @@ test "Tuple type encoding" {
     [["Variable", {}, ["elem", "type", "1"]], ["Unit", {}]],
   ])
 }
+
+///|
+test "Reference type encoding" {
+  let fq_name = @fqname.fq_name(
+    @package.PackageName::from_list(@list.of([@name.Name::from_string("MyPackage")])),
+    @module.ModulePath::from_list(@list.of([@name.Name::from_string("MyModule"), @name.Name::from_string("Path")])),
+    @name.Name::from_string("MyType"),
+  )
+  let type_arg = Type::unit(())
+  let reference_type = Type::reference((), fq_name, @list.of([type_arg]))
+  let json : Json = reference_type.to_json(Default::default())
+  @json.inspect(json, content=[
+    "Reference",
+    {},
+    [
+      [["my","package"]],
+      [["my","module"], ["path"]],
+      ["my", "type"]
+    ],
+    [["Unit", {}]],
+  ])
+} 
