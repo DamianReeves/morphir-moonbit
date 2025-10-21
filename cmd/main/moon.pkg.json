@@ -5,9 +5,7 @@
     //   "path": "Morphir/morphir/lib/classic/ir",
     //   "alias": "classic_ir"
     // },
-    {
-      "path": "Morphir/morphir/lib/ir",
-      "alias": "ir"
-    }
+    "Morphir/morphir/lib/ir",
+    "Morphir/morphir/lib/ir/name"
   ]
 }
