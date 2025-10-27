@@ -1,9 +1,16 @@
-pub(all) suberror JsonDecodeError (@json.JsonPath, String) derive(Eq, Show, ToJson)
+///|
+pub(all) suberror JsonDecodeError (@json.JsonPath, String) derive (
+  Eq,
+  Show,
+  ToJson,
+)
 
+///|
 pub trait FromMorphirJson {
   from_json(Json, @json.JsonPath, MorphirJsonOptions) -> Self raise JsonDecodeError
 }
 
+///|
 pub fn[A : FromMorphirJson] from_json(
   json : Json,
   path : @json.JsonPath,
@@ -12,10 +19,15 @@ pub fn[A : FromMorphirJson] from_json(
   A::from_json(json, path, options)
 }
 
-fn [T] decode_error(path: @json.JsonPath, msg: String) -> T raise JsonDecodeError {
+///|
+fn[T] decode_error(
+  path : @json.JsonPath,
+  msg : String,
+) -> T raise JsonDecodeError {
   raise JsonDecodeError((path, msg))
 }
 
+///|
 pub impl FromMorphirJson for Bool with from_json(
   json : Json,
   path : @json.JsonPath,
@@ -28,6 +40,7 @@ pub impl FromMorphirJson for Bool with from_json(
   }
 }
 
+///|
 pub impl FromMorphirJson for String with from_json(
   json : Json,
   path : @json.JsonPath,
@@ -39,6 +52,7 @@ pub impl FromMorphirJson for String with from_json(
   s
 }
 
+///|
 pub impl FromMorphirJson for StringView with from_json(
   json : Json,
   path : @json.JsonPath,
@@ -50,6 +64,7 @@ pub impl FromMorphirJson for StringView with from_json(
   s[:]
 }
 
+///|
 pub impl FromMorphirJson for Json with from_json(
   json : Json,
   _ : @json.JsonPath,

@@ -1,5 +1,5 @@
-using @codec {
-  trait ToMorphirJson
-}
+///|
+using @codec {trait ToMorphirJson}
 
+///|
 using @name {type Name}

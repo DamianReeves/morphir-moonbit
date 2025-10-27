@@ -5,6 +5,7 @@ test "Name::from_string" {
   @json.inspect(actualJson, content=["morphir", "i", "r", "name"])
 }
 
+///|
 test "Name:from_string many" {
   let test_cases = [
     ("fooBar_baz 123", ["foo", "bar", "baz", "123"]),
@@ -34,6 +35,7 @@ test "Name::to_title_case" {
   assert_eq(actual, expected)
 }
 
+///|
 test "Name to_title_case as method" {
   let test_cases = [
     (Name::from_list(@list.of(["foo", "bar", "baz", "123"])), "FooBarBaz123"),
@@ -44,27 +46,42 @@ test "Name to_title_case as method" {
   assert_eq(actual, expected)
 }
 
+///|
 test "Name::to_human_words" {
   let test_cases = [
-    (Name::from_list(@list.of(["value", "in", "u", "s", "d"])), @list.of(["value", "in", "USD"])),
-    (Name::from_list(@list.of(["simple", "name"])), @list.of(["simple", "name"]))    
+    (
+      Name::from_list(@list.of(["value", "in", "u", "s", "d"])),
+      @list.of(["value", "in", "USD"]),
+    ),
+    (
+      Name::from_list(@list.of(["simple", "name"])),
+      @list.of(["simple", "name"]),
+    ),
   ]
   let expected = test_cases.map(t => t.1)
   let actual = test_cases.map(t => Name::to_human_words(t.0))
   assert_eq(actual, expected)
 }
 
+///|
 test "Name::to_human_words_title" {
   let test_cases = [
-    (Name::from_list(@list.of(["value", "in", "u", "s", "d"])), @list.of(["Value", "in", "USD"])),
-    (Name::from_list(@list.of(["simple", "name"])), @list.of(["Simple", "name"])),
-    (Name::from_list(@list.default()), @list.default())
+    (
+      Name::from_list(@list.of(["value", "in", "u", "s", "d"])),
+      @list.of(["Value", "in", "USD"]),
+    ),
+    (
+      Name::from_list(@list.of(["simple", "name"])),
+      @list.of(["Simple", "name"]),
+    ),
+    (Name::from_list(@list.default()), @list.default()),
   ]
   let expected = test_cases.map(t => t.1)
   let actual = test_cases.map(t => Name::to_human_words_title(t.0))
   assert_eq(actual, expected)
 }
 
+///|
 test "Name::to_camel_case" {
   let test_cases = [
     (Name::from_list(@list.of(["foo", "bar", "baz", "123"])), "fooBarBaz123"),
@@ -75,6 +92,7 @@ test "Name::to_camel_case" {
   assert_eq(actual, expected)
 }
 
+///|
 test "Name::to_snake_case" {
   let test_cases = [
     (Name::from_list(@list.of(["foo", "bar", "baz", "123"])), "foo_bar_baz_123"),
@@ -85,6 +103,7 @@ test "Name::to_snake_case" {
   assert_eq(actual, expected)
 }
 
+///|
 test "Name::to_kebab_case" {
   let test_cases = [
     (Name::from_list(@list.of(["foo", "bar", "baz", "123"])), "foo-bar-baz-123"),
